@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8' />
+<link href='libs/fullcalendar.min.css' rel='stylesheet' />
+<link href='libs/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+<script src='libs/lib/moment.min.js'></script>
+<script src='libs/lib/jquery.min.js'></script>
+<script src='libs/fullcalendar.min.js'></script>
+
+<script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBkOs_b34Scl2QKGJLD5DXM2V-CEJt3FKs",
+    authDomain: "agiletalks2calendar.firebaseapp.com",
+    databaseURL: "https://agiletalks2calendar.firebaseio.com",
+    projectId: "agiletalks2calendar",
+    storageBucket: "",
+    messagingSenderId: "786214010772"
+  };
+  firebase.initializeApp(config);
+
+  // Get a reference to the database service
+  var database = firebase.database();
+   var eventsRef = firebase.database().ref('/events');
+   /*
+   var eventsRef = database.ref('/events');
+   eventsRef.once('value', function(snapshot) {
+      console.log(snapshot.val());
+   });
+   */
+   
+   eventsRef.once('value').then(function(snapshot) {
+  //var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
+  // ...
+  
+  var cal_events = [];
+  //console.log();
+  var events = snapshot.val();
+   for (var event_id in events) {
+       if (events.hasOwnProperty(event_id)) {
+           //console.log(events[event_id].title);
+         cal_events.push({
+             title: events[event_id].title,
+             start: events[event_id].datetime
+           });
+       }
+   }
+   
+   
+  $(document).ready(function() {
+
+    $('#calendar').fullCalendar({
+      defaultDate: '2018-01-13',
+      editable: true,
+      eventLimit: true, // allow "more" link when too many events
+      events: cal_events
+    });
+
+    
+    $('#addForm .addButton').click(function(e){
+      e.preventDefault(); 
+      var date = $('#addForm input[name=date]').val();
+      var title = $('#addForm input[name=title]').val();
+      var descr = $('#addForm input[name=descr]').val();
+      var duration = $('#addForm input[name=duration]').val();
+      var price = $('#addForm input[name=price]').val();
+      
+      var newEventRef = eventsRef.push();
+      newEventRef.set({
+         datetime : date,
+         descr : descr,
+         duration : duration,
+         price : price,
+         title : title
+      }).then(function() {
+    console.log('Event success added');
+  })
+  .catch(function(error) {
+    console.log('Add failed');
+  });;
+      
+      
+      
+    });
+    
+    
+  });
+   
+  
+});
+   
+
+</script>
+
+<style>
+
+  body {
+    margin: 40px 10px;
+    padding: 0;
+    font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+    font-size: 14px;
+  }
+
+  #calendar {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+</style>
+</head>
+<body>
+
+  <div id='calendar'></div>
+  
+  <div id='addForm'>
+   <h2>Добавление экскурсии</h2>
+   <form>
+      
+         Дата(формат ГГГГ-ММ-ДД) <input name="date" value="2018-01-22"/>
+         Длительность(часов) <input name="duration" value="4"/>
+         Название экскурсии <input name="title" value="Экскурсия 9" />
+         Описание <input name="descr" value="" />
+         Стоимость <input name="price" value="2000" />
+         
+         <input type="button" class="addButton" value="Создать"/>
+   </form>   
+  </div>
+
+  
+  
+</body>
+</html>
