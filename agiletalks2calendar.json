@@ -1,7 +1,7 @@
 {
   "events" : {
     "-Ki4GG4nO21lU-I-Cy5L" : {
-      "datetime" : "'2018-02-12 12:00:00'",
+      "datetime" : "2018-02-12T12:00:00",
       "descr" : "Прогулка по городу",
       "duration" : 4,
       "price" : 2000,
@@ -14,7 +14,7 @@
       }
     },
     "-Ki4GG4nO21lU-I-Cy6L" : {
-      "datetime" : "'2018-02-16 12:00:00'",
+      "datetime" : "2018-02-16T12:00:00",
       "descr" : "Прогулка по мостам",
       "duration" : 2,
       "price" : 1500,

@@ -94,6 +94,8 @@
           initApp();
       });
   </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -131,24 +133,74 @@
 
   </div>
     <script>
+
+      function initCalendar(data) {
+        var today = new Date();
+        var events = [];
+
+        $.each(data.events, function(k, v) {
+          console.log(k, v, moment(v.datetime).format("YYYY-MM-DDTh-mm-ss"));
+          // console.log(new Date()
+          // events.push(v.datetime);
+        });
+
+        // create Calendar from div HTML element
+        $("#calendar").kendoCalendar({
+          value: today,
+          dates: events,
+          weekNumber: true,
+          month: {
+              // template for dates in month view
+              content: '# if ($.inArray(+data.date, data.dates) != -1) { #' +
+                          '<div class="excursion">#= data.value #</div>' +
+                       '# } else { #' +
+                       '#= data.value #' +
+                       '# } #',
+              weekNumber: '<a class="italic">#= data.weekNumber #</a>'
+          },
+          footer: false
+        });
+
+      }
+
+      // 
+      // Start
+      // 
       $(document).ready(function() {
-          // create Calendar from div HTML element
-          $("#calendar").kendoCalendar();
+
+        var jsonPathUrl = "https://kslpv.github.io/agiletalks2calendar/agiletalks2calendar.json";
+
+        $.ajax({
+          url: jsonPathUrl,
+          dataType: "json",
+          success: function(data) {
+              //parse your data here
+              //you can split into lines using data.split('\n') 
+              //an use regex functions to effectively parse it
+              console.log("Получили данные: " + JSON.stringify(data));
+
+              initCalendar(data);
+          }
+        });
       });
-
-      var jsonPathUrl = "https://kslpv.github.io/agiletalks2calendar/agiletalks2calendar.json";
-
-      $.ajax({
-        url: jsonPathUrl,
-        dataType: "json",
-        success: function(data) {
-            //parse your data here
-            //you can split into lines using data.split('\n') 
-            //an use regex functions to effectively parse it
-            alert("Получили данные: " + JSON.stringify(data));
-        }
-    });
     </script>
+
+
+    <style>
+/*      #calendar {
+        width: 100%;
+      }
+*/
+      .excursion {
+        color: #ff9e00;
+        font-weight: bold;
+      }
+
+      .italic{
+        font-style: italic;
+      }
+
+    </style>
   </div>
 
 
