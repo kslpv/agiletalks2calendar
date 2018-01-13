@@ -169,11 +169,10 @@
         var events = [];
 
         $.each(data.events, function(k, v) {
-          console.log(k, v, moment(v.datetime).format("YYYY-MM-DDTh-mm-ss"));
-          // console.log(new Date()
-          // events.push(v.datetime);
+          var d = moment(v.datetime).toDate();
+          events.push(+new Date(d.getFullYear(), d.getMonth(), d.getDate()));
         });
-
+          kendo.culture().calendar.firstDay= 1;
         // create Calendar from div HTML element
         $("#calendar").kendoCalendar({
           value: today,
