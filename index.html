@@ -134,32 +134,52 @@
   </div>
     <script>
 
-      function initCalendar(data) {
+      calendarData = null;
+
+      function displayDay(value) {
+        console.log(value); //value is the selected date in the calendar
+
+        if (calendarData) {
+          // TODO:
+        }
+      }
+
+      function initCalendar() {
+        if (!calendarData) {
+          console.warn('calendarData is empty. Skipped!');
+          return;
+        }
+
         var today = new Date();
         var events = [];
 
-        $.each(data.events, function(k, v) {
+        $.each(calendarData.events, function(k, v) {
           var d = moment(v.datetime).toDate();
           events.push(+new Date(d.getFullYear(), d.getMonth(), d.getDate()));
         });
-          kendo.culture().calendar.firstDay= 1;
+
+        kendo.culture().calendar.firstDay = 1;
+
         // create Calendar from div HTML element
         $("#calendar").kendoCalendar({
           value: today,
+          change: function() {
+            var value = this.value();
+            displayDay(value);
+          },
           dates: events,
           weekNumber: true,
           month: {
-              // template for dates in month view
-              content: '# if ($.inArray(+data.date, data.dates) != -1) { #' +
-                          '<div class="excursion">#= data.value #</div>' +
-                       '# } else { #' +
-                       '#= data.value #' +
-                       '# } #',
-              weekNumber: '<a class="italic">#= data.weekNumber #</a>'
+            // template for dates in month view
+            content: '# if ($.inArray(+data.date, data.dates) != -1) { #' +
+                        '<div class="excursion">#= data.value #</div>' +
+                     '# } else { #' +
+                     '#= data.value #' +
+                     '# } #',
+            weekNumber: '<a class="italic">#= data.weekNumber #</a>'
           },
           footer: false
         });
-
       }
 
       // 
@@ -178,7 +198,8 @@
               //an use regex functions to effectively parse it
               console.log("Получили данные: " + JSON.stringify(data));
 
-              initCalendar(data);
+              calendarData = data;
+              initCalendar();
           }
         });
       });
