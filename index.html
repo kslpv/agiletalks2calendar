@@ -29,13 +29,110 @@
       // also add kendo.aspnetmvc.min.js or kendo.timezones.min.js, if needed
     }
   </script>
+  <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
+
+
+  <script>
+      // Initialize Firebase
+      var config = {
+          apiKey: "AIzaSyBkOs_b34Scl2QKGJLD5DXM2V-CEJt3FKs",
+          authDomain: "agiletalks2calendar.firebaseapp.com",
+          databaseURL: "https://agiletalks2calendar.firebaseio.com",
+          projectId: "agiletalks2calendar",
+          storageBucket: "",
+          messagingSenderId: "786214010772"
+      };
+      firebase.initializeApp(config);
+
+
+      function initApp(){
+
+          $('#formAdmin .logout').click(function(){
+              console.log('logging out...');
+              firebase.auth().signOut().then(function() {
+                  // Sign-out successful.
+                  console.log('Sign-out successful');
+
+
+                  $('#formGuest').show();
+                  $('#formAdmin').hide();
+
+              }).catch(function(error) {
+                  // An error happened.
+                  console.log('An error happened:', error);
+              });
+
+          });
+
+          $('#loginForm .login').click(function(e){
+
+              e.preventDefault();
+              var email = $('#formGuest input[name=email]').val();
+              var password = $('#formGuest input[name=password]').val();
+              console.log('logging in as:', email);
+
+              firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+                  // Handle Errors here.
+                  var errorCode = error.code;
+                  var errorMessage = error.message;
+                  // [START_EXCLUDE]
+                  if (errorCode === 'auth/wrong-password') {
+                      alert('Wrong password.');
+                  } else {
+                      alert(errorMessage);
+                  }
+                  console.log(error);
+                  //document.getElementById('quickstart-sign-in').disabled = false;
+                  // [END_EXCLUDE]
+              });
+
+          });
+
+          firebase.auth().onAuthStateChanged(function(user) {
+
+              if(user==null){
+
+                  $('#formGuest').show();
+                  $('#formAdmin').hide();
+              }else{
+                  $('#formAdmin .email').text(user.email);
+
+                  $('#formGuest').hide();
+                  $('#formAdmin').show();
+              }
+          });
+
+
+
+          //console.log(firebase.auth().currentUser);
+
+      }
+
+      $(document).ready(function() {
+          initApp();
+      });
+  </script>
 </head>
 <body>
 
   <div id="example">
   <div class="demo-section k-content" style="text-align: center;">
-  <h4>Pick a date</h4>
-  <div id="calendar"></div>
+
+    <div id="formAdmin" style="display:none;">
+      Вход выполнен от <span class="email">-</span>
+      <button class="logout" value=>Выйти</button>
+    </div>
+
+
+    <div id="formGuest" style="display:none;" >
+      <form id="loginForm">
+        Email <input name="email" value="xandrx@gmail.com"/>
+        Пароль <input type="password" name="password" value="123123" />
+        <input type="button" class="login" value="Войти"/>
+      </form>
+    </div>
+
+    <div id="calendar"></div>
 
   </div>
     <script>
@@ -58,5 +155,7 @@
     });
     </script>
   </div>
+
+
 </body>
 </html>
