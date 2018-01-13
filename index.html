@@ -3,10 +3,10 @@
 <head>
   <title>Agile Talks 2 Claendar</title>
 
-  <link rel="stylesheet" href="//kendo.cdn.telerik.com/2017.3.1026/styles/kendo.common.min.css" />
-  <link rel="stylesheet" href="//kendo.cdn.telerik.com/2017.3.1026/styles/kendo.bootstrap.min.css" />
+  <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.3.1026/styles/kendo.common.min.css" />
+  <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.3.1026/styles/kendo.bootstrap.min.css" />
 
-  <script src="//kendo.cdn.telerik.com/2017.3.1026/js/jquery.min.js"></script>
+  <script src="https://kendo.cdn.telerik.com/2017.3.1026/js/jquery.min.js"></script>
   <script>
     if (typeof jQuery == "undefined") {
       // fallback to local jQuery
@@ -14,7 +14,7 @@
     }
   </script>
 
-  <script src="//kendo.cdn.telerik.com/2017.3.1026/js/kendo.all.min.js"></script>
+  <script src="https://kendo.cdn.telerik.com/2017.3.1026/js/kendo.all.min.js"></script>
   <script>
     if (typeof kendo == "undefined") {
       // checking for loaded CSS files is cumbersome,
@@ -43,6 +43,19 @@
           // create Calendar from div HTML element
           $("#calendar").kendoCalendar();
       });
+
+      var jsonPathUrl = "https://kslpv.github.io/agiletalks2calendar/agiletalks2calendar.json";
+
+      $.ajax({
+        url: jsonPathUrl,
+        dataType: "json",
+        success: function(data) {
+            //parse your data here
+            //you can split into lines using data.split('\n') 
+            //an use regex functions to effectively parse it
+            alert("Получили данные: " + JSON.stringify(data));
+        }
+    });
     </script>
   </div>
 </body>

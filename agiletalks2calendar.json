@@ -1,0 +1,30 @@
+{
+  "events" : {
+    "-Ki4GG4nO21lU-I-Cy5L" : {
+      "datetime" : "'2018-02-12 12:00:00'",
+      "descr" : "Прогулка по городу",
+      "duration" : 4,
+      "price" : 2000,
+      "title" : "Экскурсия 1",
+      "visitors" : {
+        "-KhbmDwgoJAdOFNvODWm" : {
+          "name" : "Александр",
+          "phone" : "+79062315095"
+        }
+      }
+    },
+    "-Ki4GG4nO21lU-I-Cy6L" : {
+      "datetime" : "'2018-02-16 12:00:00'",
+      "descr" : "Прогулка по мостам",
+      "duration" : 2,
+      "price" : 1500,
+      "title" : "Экскурсия Мостовая",
+      "visitors" : {
+        "-KhbmDwgoJAdOFNvODWm" : {
+          "name" : "Александр",
+          "phone" : "+79062315095"
+        }
+      }
+    }
+  }
+}
