@@ -43,6 +43,19 @@
           // create Calendar from div HTML element
           $("#calendar").kendoCalendar();
       });
+
+      var jsonPathUrl = "https://kslpv.github.io/agiletalks2calendar/agiletalks2calendar.json";
+
+      $.ajax({
+        url: jsonPathUrl,
+        dataType: "json",
+        success: function(data) {
+            //parse your data here
+            //you can split into lines using data.split('\n') 
+            //an use regex functions to effectively parse it
+            alert("Получили данные: " + JSON.stringify(data));
+        }
+    });
     </script>
   </div>
 </body>
