@@ -104,7 +104,10 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
 </head>
+
+
 <body>
+  <!-- Auth -->
   <div class="container">
     <div class="row">
       <div class="col-sm-3">
@@ -131,13 +134,24 @@
 
       </div>
     </div>
-
   </div>
+
   <div id="example">
+
   <div class="demo-section k-content" style="text-align: center;">
 
+    <!-- Calendar -->
     <div id="calendar"></div>
 
+    <!-- Event details -->
+    <div id="event"></div>
+    
+    <script id="javascriptTemplate" type="text/x-kendo-template">
+        <h1> #= title # </h1>
+        <p> #= descr # </p>
+    </script>
+
+    <!-- Add form -->
     <div id='addForm' class="container" style="display:none;">
       <h2>Добавление экскурсии</h2>
       <form>
@@ -172,7 +186,19 @@
         console.log(value); //value is the selected date in the calendar
 
         if (calendarData) {
-          // TODO:
+          $.each(calendarData.events, function(k, v) {
+            var d = moment(v.datetime).toDate();
+            var d1 = +new Date(d.getFullYear(), d.getMonth(), d.getDate());
+
+            var d2 = +new Date(value.getFullYear(), value.getMonth(), value.getDate());
+
+
+            if (d2 == d1) {
+              var template = kendo.template($("#javascriptTemplate").html());
+              var result = template(v); //Execute the template
+              $("#event").html(result); //Append the result
+            }
+          });
         }
       }
 
