@@ -23,32 +23,25 @@
 
   // Get a reference to the database service
   var database = firebase.database();
-   var eventsRef = firebase.database().ref('/events');
-   /*
-   var eventsRef = database.ref('/events');
-   eventsRef.once('value', function(snapshot) {
-      console.log(snapshot.val());
-   });
-   */
+  var eventsRef = firebase.database().ref('/events');
    
    eventsRef.once('value').then(function(snapshot) {
-  //var username = (snapshot.val() && snapshot.val().username) || 'Anonymous';
-  // ...
-  
-  var cal_events = [];
-  //console.log();
-  var events = snapshot.val();
-   for (var event_id in events) {
-       if (events.hasOwnProperty(event_id)) {
-           //console.log(events[event_id].title);
-         cal_events.push({
-             title: events[event_id].title,
-             start: events[event_id].datetime
-           });
-       }
-   }
+        var cal_events = [];
+        //console.log();
+        var events = snapshot.val();
+         for (var event_id in events) {
+             if (events.hasOwnProperty(event_id)) {
+                 //console.log(events[event_id].title);
+               cal_events.push({
+                   title: events[event_id].title,
+                   start: events[event_id].datetime
+                 });
+             }
+         }
+         
+      });
    
-   
+
   $(document).ready(function() {
 
     $('#calendar').fullCalendar({
@@ -68,30 +61,24 @@
       var price = $('#addForm input[name=price]').val();
       
       var newEventRef = eventsRef.push();
-      newEventRef.set({
-         datetime : date,
-         descr : descr,
-         duration : duration,
-         price : price,
-         title : title
-      }).then(function() {
-    console.log('Event success added');
-  })
-  .catch(function(error) {
-    console.log('Add failed');
-  });;
-      
-      
-      
+            newEventRef.set({
+               datetime : date,
+               descr : descr,
+               duration : duration,
+               price : price,
+               title : title
+            }).then(function() {
+          console.log('Event success added');
+        })
+        .catch(function(error) {
+          console.log('Add failed');
+        });
     });
     
     
   });
    
-  
-});
    
-
 </script>
 
 <style>

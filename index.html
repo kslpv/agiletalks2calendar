@@ -25,7 +25,7 @@
           messagingSenderId: "786214010772"
       };
       firebase.initializeApp(config);
-
+      var eventsRef = firebase.database().ref('/events');
 
       function initApp(){
 
@@ -73,14 +73,19 @@
           firebase.auth().onAuthStateChanged(function(user) {
 
               if(user==null){
-
+                  // --- Не авторизованы ----
                   $('#formGuest').show();
                   $('#formAdmin').hide();
               }else{
+                  // --- Авторизованы -----
                   $('#formAdmin .email').text(user.email);
 
                   $('#formGuest').hide();
                   $('#formAdmin').show();
+                  
+                  
+                  $('#addForm').show();
+                  
               }
           });
 
@@ -131,6 +136,31 @@
 
     <div id="calendar"></div>
 
+    <div id='addForm' class="container" style="display:none;">
+      <h2>Добавление экскурсии</h2>
+      <form>
+         <div class="row">
+            <div class="col-3">Дата(формат ГГГГ-ММ-ДД)</div> <div class="col-3"><input name="date" value="2018-01-22"/></div>
+         </div>   
+         <div class="row">
+            <div class="col-3">   Длительность(часов)</div> <div class="col-3"><input name="duration" value="4"/></div>
+         </div>
+            <div class="row">
+            <div class="col-3">Название экскурсии</div> <div class="col-3"><input name="title" value="Экскурсия 9" /></div>
+         </div>
+            <div class="row">
+            <div class="col-3">Описание</div> <div class="col-3"><input name="descr" value="" /></div>
+         </div>
+            <div class="row">
+            <div class="col-3">Стоимость</div> <div class="col-3"><input name="price" value="2000" /></div>
+         </div>
+            
+            <input type="button" class="addButton" value="Создать"/>
+      </form>   
+     </div>
+
+    
+    
   </div>
     <script>
 
@@ -166,23 +196,64 @@
       // 
       // Start
       // 
+      
       $(document).ready(function() {
 
-        var jsonPathUrl = "https://kslpv.github.io/agiletalks2calendar/agiletalks2calendar.json";
+         if(false){
+              var jsonPathUrl = "https://kslpv.github.io/agiletalks2calendar/agiletalks2calendar.json";
 
-        $.ajax({
-          url: jsonPathUrl,
-          dataType: "json",
-          success: function(data) {
-              //parse your data here
-              //you can split into lines using data.split('\n') 
-              //an use regex functions to effectively parse it
-              console.log("Получили данные: " + JSON.stringify(data));
+              $.ajax({
+                url: jsonPathUrl,
+                dataType: "json",
+                success: function(data) {
+                    //parse your data here
+                    //you can split into lines using data.split('\n') 
+                    //an use regex functions to effectively parse it
+                    console.log("Получили данные: " + JSON.stringify(data));
 
-              initCalendar(data);
-          }
-        });
+                    initCalendar(data);
+                }
+              });
+        }
+              
+        // Подгрузка событий из облака    
+            eventsRef.once('value').then(function(snapshot) {              
+              initCalendar({events: snapshot.val()});
+            });
+
+       // Логика создания события
+          
+       $('#addForm .addButton').click(function(e){
+         e.preventDefault(); 
+         var date = $('#addForm input[name=date]').val();
+         var title = $('#addForm input[name=title]').val();
+         var descr = $('#addForm input[name=descr]').val();
+         var duration = $('#addForm input[name=duration]').val();
+         var price = $('#addForm input[name=price]').val();
+         
+         var newEventRef = eventsRef.push();
+               newEventRef.set({
+                  datetime : date,
+                  descr : descr,
+                  duration : duration,
+                  price : price,
+                  title : title
+               }).then(function() {
+             console.log('Event success added');
+           })
+           .catch(function(error) {
+             console.log('Add failed');
+           });
+       });
+            
+      
       });
+      
+      
+   
+
+      
+      
     </script>
 
 
