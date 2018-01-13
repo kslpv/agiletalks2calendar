@@ -15,20 +15,6 @@
   </script>
 
   <script src="https://kendo.cdn.telerik.com/2017.3.1026/js/kendo.all.min.js"></script>
-  <script>
-    if (typeof kendo == "undefined") {
-      // checking for loaded CSS files is cumbersome,
-      // that's why we assume that if the scripts have failed, so have the stylesheets
-
-      // fallback to local Kendo UI stylesheets
-      document.write(decodeURIComponent('%3Clink rel="stylesheet" href="/path/to/local/kendo.common.min.css" %3C/%3E'));
-      document.write(decodeURIComponent('%3Clink rel="stylesheet" href="/path/to/local/kendo.blueopal.min.css" %3C/%3E'));
-
-      // fallback to local Kendo UI scripts
-      document.write(decodeURIComponent('%3Cscript src="/path/to/local/kendo.all.min.js" %3E%3C/script%3E'));
-      // also add kendo.aspnetmvc.min.js or kendo.timezones.min.js, if needed
-    }
-  </script>
   <script src="https://www.gstatic.com/firebasejs/4.8.2/firebase.js"></script>
 
 
