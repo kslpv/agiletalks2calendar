@@ -76,6 +76,8 @@
                   // --- Не авторизованы ----
                   $('#formGuest').show();
                   $('#formAdmin').hide();
+                  
+                  $('#addForm').hide();
               }else{
                   // --- Авторизованы -----
                   $('#formAdmin .email').text(user.email);
