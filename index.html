@@ -15,7 +15,11 @@
 
 
   <script>
-      // Initialize Firebase
+      
+      /**
+       * Конфиг для инициализации Firebase
+       * @type {Object}
+       */
       var config = {
           apiKey: "AIzaSyBkOs_b34Scl2QKGJLD5DXM2V-CEJt3FKs",
           authDomain: "agiletalks2calendar.firebaseapp.com",
@@ -24,9 +28,27 @@
           storageBucket: "",
           messagingSenderId: "786214010772"
       };
+
+      /**
+       * TODO:
+       * 
+       * похоже, что переменная firebase уже объявлена в файле firebase.js
+       * С этим надо разобраться и поправить, если вдруг. Комент удалить.
+       *
+       */
       firebase.initializeApp(config);
+
+      /**
+       * Через этот объект мы будем работать с таблицей "События"
+       * 
+       * @type {Object}
+       */
       var eventsRef = firebase.database().ref('/events');
 
+
+      /**
+       * Инициализация логики после загрузки страницы
+       */
       function initApp(){
 
           $('#formAdmin .logout').click(function(){
@@ -90,13 +112,11 @@
                   
               }
           });
-
-
-
-          //console.log(firebase.auth().currentUser);
-
       }
 
+      /**
+       * Это выполняется после загрузки страницы.
+       */
       $(document).ready(function() {
           initApp();
       });
